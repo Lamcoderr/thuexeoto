@@ -1,0 +1,120 @@
+.car-detail {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.car-image img {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+.car-info h2 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.brand {
+  color: #777;
+  margin-bottom: 15px;
+}
+
+.desc {
+  color: #444;
+  line-height: 1.4;
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.spec-item {
+  background: #f5f5f5;
+  padding: 14px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.spec-item span {
+  font-size: 13px;
+  color: #777;
+}
+
+.spec-item strong {
+  display: block;
+  font-size: 18px;
+  margin-top: 6px;
+}
+
+/* FORM */
+.booking-form {
+  margin-top: 25px;
+  padding: 20px;
+  background: linear-gradient(135deg, #705cf9, #8a7dfc);
+  color: white;
+  border-radius: 14px;
+}
+
+.booking-form h3 {
+  margin-bottom: 12px;
+}
+
+.booking-form label {
+  display: block;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.booking-form input,
+.booking-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+}
+
+.total-box {
+  font-size: 18px;
+  margin: 10px 0;
+  padding: 10px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 8px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #ff7b00;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .car-detail {
+    grid-template-columns: 1fr;
+  }
+
+  .car-image img {
+    height: 260px;
+  }
+}

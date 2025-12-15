@@ -1,0 +1,62 @@
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 15px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.header h2 {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+thead {
+  background: #f5f5f5;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #ececec;
+}
+
+tbody tr {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+tbody tr:hover {
+  background: #f0f0ff;
+}
+
+.tag {
+  padding: 5px 10px;
+  border-radius: 6px;
+  color: white;
+  font-size: 13px;
+}
+
+.pending { background: #f1c40f; }
+.confirmed { background: #27ae60; }
+.rejected { background: #e74c3c; }
+.canceled { background: #7f8c8d; }
+.completed { background: #8e44ad; }

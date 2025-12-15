@@ -1,0 +1,31 @@
+<div class="history-container">
+
+  <h2>📘 Lịch sử đặt xe của bạn</h2>
+
+  <div *ngIf="bookings.length === 0" class="empty">
+    Bạn chưa có đơn đặt xe nào.
+  </div>
+
+  <div class="booking-card" *ngFor="let b of bookings">
+    
+    <div class="left">
+      <img [src]="b.car.image_url" alt="Car">
+    </div>
+
+    <div class="right">
+      <h3>{{ b.car.name }}</h3>
+
+      <p><strong>Ngày thuê:</strong> {{ b.start_date }} → {{ b.end_date }}</p>
+      <p><strong>Tổng tiền:</strong> {{ b.total_price | number }} đ</p>
+      <p><strong>Trạng thái:</strong> 
+        <span class="status" [ngClass]="b.status">
+          {{ b.status }}
+        </span>
+      </p>
+
+      <p *ngIf="b.note"><strong>Ghi chú:</strong> {{ b.note }}</p>
+    </div>
+
+  </div>
+
+</div>

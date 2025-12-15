@@ -1,0 +1,30 @@
+<div class="detail-box" *ngIf="booking">
+
+  <h2>Chi tiết Booking</h2>
+
+  <div class="info">
+    <p><strong>Tên khách:</strong> {{ booking.user.name }}</p>
+    <p><strong>SĐT:</strong> {{ booking.user.phone }}</p>
+    <p><strong>Email:</strong> {{ booking.user.email }}</p>
+
+    <p><strong>Xe thuê:</strong> {{ booking.car.name }}</p>
+    <p><strong>Ngày thuê:</strong> {{ booking.start_date }} → {{ booking.end_date }}</p>
+
+    <p><strong>Ghi chú:</strong> {{ booking.note || "Không có" }}</p>
+
+    <p class="price">
+      <strong>Tổng tiền:</strong>
+      {{ booking.total_price | number }} đ
+    </p>
+
+    <p><strong>Trạng thái:</strong> 
+      <span class="tag" [ngClass]="booking.status">{{ booking.status }}</span>
+    </p>
+  </div>
+
+  <div class="actions">
+    <button class="ok" (click)="approve()">✔ Xác nhận</button>
+    <button class="no" (click)="reject()">✘ Từ chối</button>
+  </div>
+
+</div>

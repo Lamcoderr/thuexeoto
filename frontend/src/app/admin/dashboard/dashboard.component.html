@@ -1,0 +1,64 @@
+
+<div class="admin-dashboard" *ngIf="!loading; else loadingTpl">
+  <h1>Admin Dashboard</h1>
+
+  <div class="cards">
+    <div class="card">
+      <div class="title">Tổng xe</div>
+      <div class="value">{{ stats.total_cars }}</div>
+    </div>
+
+    <div class="card">
+      <div class="title">Tổng đơn</div>
+      <div class="value">{{ stats.total_bookings }}</div>
+    </div>
+
+    <div class="card">
+      <div class="title">Doanh thu</div>
+      <div class="value">{{ formatMoney(stats.revenue) }} ₫</div>
+    </div>
+
+    <div class="card">
+      <div class="title">Pending</div>
+      <div class="value">{{ statusCount('pending') }}</div>
+    </div>
+  </div>
+
+  <section class="chart-area">
+    <h3>Booking theo trạng thái</h3>
+    <div class="bar-list">
+      <div class="bar-row" *ngFor="let s of ['pending','confirmed','rejected','canceled','completed']">
+        <div class="label">{{ s | titlecase }}</div>
+        <div class="bar">
+          <div class="bar-fill" [style.width.%]="(statusCount(s) / (stats.total_bookings || 1)) * 100"></div>
+        </div>
+        <div class="count">{{ statusCount(s) }}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="recent">
+    <h3>Booking gần nhất</h3>
+    <div class="recent-list">
+      <div class="recent-item" *ngFor="let b of stats.recent_bookings">
+        <div class="left">
+          <div class="name">{{ b.user?.name ?? 'Khách lạ' }}</div>
+          <div class="car">{{ b.car?.name ?? '—' }}</div>
+        </div>
+        <div class="right">
+          <div class="date">{{ b.start_date }} ➜ {{ b.end_date }}</div>
+          <div class="price">{{ formatMoney(b.total_price) }} ₫</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="actions">
+    <a class="btn" routerLink="/admin/bookings">Quản lý booking</a>
+    <a class="btn secondary" routerLink="/admin/cars">Quản lý xe</a>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="loading">Đang tải dữ liệu...</div>
+</ng-template>

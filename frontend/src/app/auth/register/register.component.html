@@ -1,0 +1,24 @@
+<div class="register-container">
+  <h2>Đăng ký tài khoản</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    <label>Họ tên</label>
+    <input type="text" formControlName="name" placeholder="Nhập họ tên">
+
+    <label>Email</label>
+    <input type="email" formControlName="email" placeholder="Nhập email">
+
+    <label>Mật khẩu</label>
+    <input type="password" formControlName="password" placeholder="Nhập mật khẩu">
+
+    <label>Nhập lại mật khẩu</label>
+    <input type="password" formControlName="confirm" placeholder="Nhập lại mật khẩu">
+
+    <button type="submit">Đăng ký</button>
+  </form>
+
+  <p>Đã có tài khoản?
+    <a routerLink="/login">Đăng nhập</a>
+  </p>
+</div>

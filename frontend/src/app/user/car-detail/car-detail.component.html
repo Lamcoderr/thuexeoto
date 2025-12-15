@@ -1,0 +1,64 @@
+<div class="car-detail" *ngIf="car">
+
+  <!-- ẢNH XE -->
+  <div class="car-image">
+    <img [src]="car.image_url" alt="Car" loading="lazy">
+  </div>
+
+  <!-- THÔNG TIN XE -->
+  <div class="car-info">
+    
+    <h2>{{ car.name }}</h2>
+
+    <p class="brand">Hãng xe: <strong>{{ car.brand }}</strong></p>
+
+    <p class="desc">{{ car.description }}</p>
+
+    <div class="specs">
+      <div class="spec-item">
+        <span>Số chỗ</span>
+        <strong>{{ car.seats }}</strong>
+      </div>
+      <div class="spec-item">
+        <span>Giá thuê</span>
+        <strong>{{ car.price | number }} đ/ngày</strong>
+      </div>
+      <div class="spec-item">
+        <span>Biển số</span>
+        <strong>{{ car.license_plate }}</strong>
+      </div>
+    </div>
+
+    <!-- FORM ĐẶT XE THEO MẪU -->
+    <div class="booking-form">
+
+      <h3>📅 ĐẶT LỊCH THUÊ XE</h3>
+
+      <label>Họ và tên</label>
+      <input type="text" [(ngModel)]="booking.customer_name" placeholder="Nguyễn Văn A">
+
+      <label>Số điện thoại</label>
+      <input type="text" [(ngModel)]="booking.phone" placeholder="090xxxxxxx">
+
+      <label>Email</label>
+      <input type="email" [(ngModel)]="booking.email" placeholder="example@gmail.com">
+
+      <label>Ngày bắt đầu</label>
+      <input type="date" [(ngModel)]="booking.start_date">
+
+      <label>Ngày kết thúc</label>
+      <input type="date" [(ngModel)]="booking.end_date">
+
+      <label>Ghi chú</label>
+      <textarea rows="2" [(ngModel)]="booking.note"></textarea>
+
+      <div class="total-box" *ngIf="totalPrice > 0">
+        Tổng tiền: <strong>{{ totalPrice | number }} đ</strong>
+      </div>
+
+      <button (click)="bookCar()">Gửi yêu cầu đặt xe</button>
+
+    </div>
+  </div>
+
+</div>

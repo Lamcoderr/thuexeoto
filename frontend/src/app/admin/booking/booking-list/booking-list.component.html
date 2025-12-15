@@ -1,0 +1,35 @@
+<div class="container">
+
+  <div class="header">
+    <h2>QUẢN LÝ ĐẶT LỊCH</h2>
+
+    <select [(ngModel)]="filterStatus" (change)="loadBookings()">
+      <option *ngFor="let s of statuses" [value]="s.value">
+        {{ s.label }}
+      </option>
+    </select>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Khách hàng</th>
+        <th>Xe thuê</th>
+        <th>Ngày thuê</th>
+        <th>Trạng thái</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let b of bookings" (click)="viewDetail(b.id)">
+        <td>{{ b.user.name }}</td>
+        <td>{{ b.car.name }}</td>
+        <td>{{ b.start_date }} - {{ b.end_date }}</td>
+        <td>
+          <span class="tag" [ngClass]="b.status">{{ b.status }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

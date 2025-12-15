@@ -1,0 +1,38 @@
+<div class="edit-container">
+  <h2>Sửa thông tin xe</h2>
+
+  <form (ngSubmit)="submit()">
+
+    <label>Tên xe</label>
+    <input type="text" [(ngModel)]="car.name" name="name" required>
+
+    <label>Hãng xe</label>
+    <select [(ngModel)]="car.brand" name="brand" required>
+      <option>Toyota</option>
+      <option>Kia</option>
+      <option>Mazda</option>
+      <option>VinFast</option>
+      <option>Honda</option>
+      <option>Hyundai</option>
+    </select>
+
+    <label>Giá thuê / ngày</label>
+    <input type="number" [(ngModel)]="car.price" name="price" required>
+
+    <label>Số chỗ</label>
+    <input type="number" [(ngModel)]="car.seats" name="seats" required>
+
+    <label>Mô tả</label>
+    <textarea [(ngModel)]="car.description" name="description"></textarea>
+
+    <label>Đổi hình ảnh</label>
+    <input type="file" (change)="onImageChange($event)">
+
+    <div class="preview" *ngIf="previewImage">
+      <p>Ảnh xem trước:</p>
+      <img [src]="previewImage">
+    </div>
+
+    <button type="submit" class="btn-save">Cập nhật</button>
+  </form>
+</div>

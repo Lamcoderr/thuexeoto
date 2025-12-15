@@ -1,0 +1,52 @@
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="logo">Thuê Xe 24h</div>
+    <nav>
+      <a href="#">Trang chủ</a>
+      <a href="#">Liên hệ</a>
+    </nav>
+  </header>
+
+  <!-- SEARCH & FILTER -->
+  <div class="search-box">
+    <input type="text"
+           placeholder="Tìm kiếm theo tên xe..."
+           [(ngModel)]="keyword"
+           (input)="loadCars()">
+
+    <select [(ngModel)]="brand" (change)="loadCars()">
+      <option value="">Hãng xe</option>
+      <option>Toyota</option>
+      <option>Kia</option>
+      <option>Mazda</option>
+      <option>Hyundai</option>
+      <option>Honda</option>
+    </select>
+
+    <select [(ngModel)]="seats" (change)="loadCars()">
+      <option value="">Số chỗ</option>
+      <option value="4">4 chỗ</option>
+      <option value="5">5 chỗ</option>
+      <option value="7">7 chỗ</option>
+      <option value="15">15 chỗ</option>
+      <option value="16">16 chỗ</option>
+    </select>
+  </div>
+
+  <!-- LIST -->
+  <div class="grid">
+    <div class="car-card" *ngFor="let car of cars">
+      <img [src]="car.image_url" loading="lazy">
+
+      <h3>{{ car.name }}</h3>
+      <p class="brand">{{ car.brand }} • {{ car.seats }} chỗ</p>
+
+      <p class="price">{{ car.price | number }} đ / ngày</p>
+
+      <button (click)="viewDetail(car.id)">Xem chi tiết</button>
+    </div>
+  </div>
+
+</div>
