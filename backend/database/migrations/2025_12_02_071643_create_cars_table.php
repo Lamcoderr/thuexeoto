@@ -7,19 +7,19 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up(): void
-    {
-        Schema::create('cars', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('brand');
-            $table->integer('price'); // giá thuê theo ngày
-            $table->integer('seats');
-            $table->string('image_url')->nullable();
-            $table->text('description')->nullable();
-            $table->timestamps();
-        });
-    }
-
+{
+    Schema::create('cars', function (Blueprint $table) {
+        $table->id();
+        $table->string('name');
+        $table->string('brand');
+        $table->integer('price');
+        $table->integer('seats');
+        $table->string('license_plate')->unique(); 
+        $table->string('image_url')->nullable();
+        $table->text('description')->nullable();
+        $table->timestamps();
+    });
+}
     public function down(): void
     {
         Schema::dropIfExists('cars');

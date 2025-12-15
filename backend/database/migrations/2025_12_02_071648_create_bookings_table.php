@@ -10,19 +10,21 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('car_id')->constrained('cars')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('car_id')->constrained()->cascadeOnDelete();
 
             $table->date('start_date');
             $table->date('end_date');
 
-            $table->integer('total_price')->default(0);
-            $table->string('status')->default('pending'); // pending, approved, canceled
-            $table->text('note')->nullable();
+            $table->integer('total_price');
 
-            $table->timestamps();
-        });
+            $table->enum('status', ['pending', 'confirmed', 'rejected', 'canceled'])
+              ->default('pending');
+
+            $table->text('note')->nullable();
+        $table->timestamps();
+});
+
     }
 
     public function down(): void
