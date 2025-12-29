@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 export class RegisterComponent {
 
   form!: FormGroup;
+  loading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -29,18 +30,27 @@ export class RegisterComponent {
   }
 
   submit() {
-    if (this.form.invalid) return;
-
-    if (this.form.value.password !== this.form.value.confirm) {
-      return alert('Mật khẩu không khớp');
+    if (this.form.invalid) {
+      alert('Form không hợp lệ!');
+      return;
     }
 
+    if (this.form.value.password !== this.form.value.confirm) {
+      alert('Mật khẩu không khớp!');
+      return;
+    }
+
+    this.loading = true;
     this.api.register(this.form.value).subscribe({
-      next: () => {
-        alert('Đăng ký thành công');
+      next: (res) => {
+        this.loading = false;
+        alert('Đăng ký thành công!');
         this.router.navigate(['/login']);
       },
-      error: () => alert('Email đã tồn tại')
+      error: (err) => {
+        this.loading = false;
+        alert('Lỗi: ' + (err.error?.message || 'Server error'));
+      }
     });
   }
 }

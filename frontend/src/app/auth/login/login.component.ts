@@ -34,10 +34,18 @@ export class LoginComponent {
     this.loading = true;
 
     this.api.login(this.form.value).subscribe({
-      next: (res: { token: string; }) => {
+      next: (res: any) => {
+        // backend returns { status, message, user, token }
         alert('Đăng nhập thành công');
-        localStorage.setItem('token', res.token);
-        this.router.navigate(['/']);
+        if (res.token) {
+          localStorage.setItem('token', res.token);
+        }
+        if (res.user && res.user.id) {
+          localStorage.setItem('user_id', String(res.user.id));
+          localStorage.setItem('user_name', res.user.name || '');
+        }
+        this.loading = false;
+        this.router.navigate(['/cars']);
       },
       error: (err: any) => {
         alert('Sai email hoặc mật khẩu');
@@ -45,4 +53,4 @@ export class LoginComponent {
       }
     });
   }
-}
+  }

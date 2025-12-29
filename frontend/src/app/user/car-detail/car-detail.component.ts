@@ -39,18 +39,32 @@ export class CarDetailComponent implements OnInit {
   loadCar(id: number) {
     this.api.getCarById(id).subscribe({
       next: (res: any) => {
-        this.car = res.data;
+        // Backend returns res.data
+        this.car = res.data || res;
 
+        // Normalize image_url and price
         if (!this.car.image_url) {
-          this.car.image_url = '/assets/default-car.png';
+          if (this.car.image) {
+            this.car.image_url = this.api.getImageUrl(this.car.image);
+          } else {
+            this.car.image_url = '/assets/default-car.png';
+          }
         }
+
+        if (!this.car.price && this.car.price_per_day) {
+          this.car.price = this.car.price_per_day;
+        }
+
+        // initial calculate if dates present
+        this.calculateTotal();
       },
       error: err => console.log(err)
     });
   }
 
   calculateTotal() {
-    if (this.booking.start_date && this.booking.end_date) {
+    this.totalPrice = 0;
+    if (this.booking.start_date && this.booking.end_date && this.car) {
       const s = new Date(this.booking.start_date);
       const e = new Date(this.booking.end_date);
 
@@ -60,7 +74,8 @@ export class CarDetailComponent implements OnInit {
       }
 
       const days = Math.ceil((e.getTime() - s.getTime()) / 86400000) + 1;
-      this.totalPrice = days * this.car.price;
+      const pricePerDay = Number(this.car.price || 0);
+      this.totalPrice = days * pricePerDay;
     }
   }
 
@@ -76,9 +91,16 @@ export class CarDetailComponent implements OnInit {
       return;
     }
 
+    const userId = Number(localStorage.getItem('user_id'));
+    if (!userId) {
+      alert("Vui lòng đăng nhập trước khi đặt xe!");
+      this.router.navigate(['/login']);
+      return;
+    }
+
     // PAYLOAD PHẢI KHỚP VỚI API BACKEND
     const payload = {
-      user_id: 1,  // TODO: thay bằng user login
+      user_id: userId,
       car_id: this.car.id,
       start_date: this.booking.start_date,
       end_date: this.booking.end_date,
@@ -91,8 +113,9 @@ export class CarDetailComponent implements OnInit {
       },
       error: err => {
         console.log(err);
-        alert("Đặt xe thất bại!");
+        const msg = err.error?.message || 'Đặt xe thất bại!';
+        alert(msg);
       }
     });
   }
-}
+ }

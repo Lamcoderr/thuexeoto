@@ -8,9 +8,19 @@ import { Observable } from 'rxjs';
 export class ApiService {
   [x: string]: any;
 
+  // API base
   private apiUrl = 'http://127.0.0.1:8000/api';
+  // Backend origin (without /api) — dùng để build image URLs
+  public backendOrigin = 'http://127.0.0.1:8000';
 
   constructor(private http: HttpClient) {}
+
+  // Helper: build full image url for filename (filename stored in DB as image)
+  getImageUrl(filename?: string): string {
+    if (!filename) return '/assets/default-car.png';
+    if (filename.startsWith('http')) return filename;
+    return `${this.backendOrigin}/cars/${filename}`;
+  }
 
   // ======================================
   //              ADMIN AUTH
@@ -20,22 +30,23 @@ export class ApiService {
   }
 
   refreshToken(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/admin/refresh`, {});
+    return this.http.post(`${this.apiUrl}/refresh`, {});
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/admin/logout`, {});
+    return this.http.post(`${this.apiUrl}/logout`, {});
   }
 
   adminForgotPassword(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/admin/forgot-password`, data);
+    return this.http.post(`${this.apiUrl}/forgot-password`, data);
   }
 
   // ======================================
   //                USER AUTH
   // ======================================
   login(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/user/login`, data);
+    // backend expects POST /api/login
+    return this.http.post(`${this.apiUrl}/login`, data);
   }
 
   register(data: any): Observable<any> {
@@ -43,7 +54,7 @@ export class ApiService {
   }
 
   // ======================================
-  //                CARS (ADMIN)
+  //                CARS
   // ======================================
   getCars(): Observable<any> {
     return this.http.get(`${this.apiUrl}/cars`);
@@ -58,7 +69,8 @@ export class ApiService {
   }
 
   updateCar(id: number, data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/cars/${id}`, data);  // Ở đây phải dùng POST theo API bạn viết
+    // backend uses PUT for update; your backend code uses PUT route
+    return this.http.put(`${this.apiUrl}/cars/${id}`, data);
   }
 
   deleteCar(id: number): Observable<any> {
@@ -73,13 +85,11 @@ export class ApiService {
       params: filters
     });
   }
+
   // ========== BOOKINGS ==========
-  sendBooking(data: any): Observable<any> {
-  return this.http.post(`${this.apiUrl}/bookings`, data);
-  }
-  
+  // Public create booking (backend: POST /bookings)
   createBooking(data: any) {
-  return this.http.post(`${this.apiUrl}/booking`, data);
+    return this.http.post(`${this.apiUrl}/bookings`, data);
   }
 
   // ====================================== 
@@ -90,7 +100,11 @@ export class ApiService {
   }
 
   filterBooking(status: string) {
-    return this.http.get(`${this.apiUrl}/bookings/status/${status}`);
+    // backend has /bookings/filter/{status} OR /bookings?status=...
+    // call /bookings?status=...
+    let url = `${this.apiUrl}/bookings`;
+    if (status) url = `${this.apiUrl}/bookings?status=${status}`;
+    return this.http.get(url);
   }
 
   getBookingDetail(id: number) {
@@ -104,28 +118,37 @@ export class ApiService {
   rejectBooking(id: number) {
     return this.http.post(`${this.apiUrl}/bookings/${id}/reject`, {});
   }
+
   // ======================================
   //          BOOKING HISTORY (USER)
   // ======================================
-  getBookingHistory(userId: number) {
-  return this.http.get(`${this.apiUrl}/booking-history/${userId}`);
+  getUserBookings(userId: number) {
+    return this.http.get(`${this.apiUrl}/users/${userId}/bookings`);
   }
 
-  getUserBookings(id: number) {
-  return this.http.get(this.apiUrl + '/booking/user/' + id);
-  }
-
-  // thống kê admin
+  // thống kê admin (map to existing dashboard endpoints)
   getAdminStats(): Observable<any> {
-  return this.http.get(`${this.apiUrl}/admin/stats`);
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    return this.http.get(`${this.apiUrl}/statistics/summary`, { headers });
   }
 
-  // lấy booking theo trạng thái 
-  getAdminBookings(status: string = ''): Observable<any> {
-  let url = `${this.apiUrl}/bookings`;
-  if (status) url = `${this.apiUrl}/bookings?status=${status}`;
-  return this.http.get(url);
+  getRevenueThisMonth(): Observable<any> {
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    return this.http.get(`${this.apiUrl}/stats/revenue-month`, { headers });
   }
-  
-  
+
+  getRevenueThisYear(): Observable<any> {
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    return this.http.get(`${this.apiUrl}/stats/revenue-year`, { headers });
+  }
+
+  getTopCars(): Observable<any> {
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    return this.http.get(`${this.apiUrl}/stats/top-cars`, { headers });
+  }
+
+  getNewBookings(): Observable<any> {
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    return this.http.get(`${this.apiUrl}/stats/new-bookings`, { headers });
+  }
 }

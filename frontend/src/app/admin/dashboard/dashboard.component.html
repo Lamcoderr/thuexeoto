@@ -1,5 +1,4 @@
-
-<div class="admin-dashboard" *ngIf="!loading; else loadingTpl">
+<div class="admin-dashboard">
   <h1>Admin Dashboard</h1>
 
   <div class="cards">
@@ -53,12 +52,39 @@
     </div>
   </section>
 
+  <section class="revenue-chart">
+    <h3>Doanh thu tháng này</h3>
+    <div class="chart">
+      <div class="bar" *ngFor="let r of revenueMonth">
+        <div class="bar-fill" [style.height.%]="(r.revenue / maxRevenueMonth) * 100"></div>
+        <div class="label">{{ r.day }}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="top-cars">
+    <h3>Top xe được thuê nhiều nhất</h3>
+    <div class="list">
+      <div class="item" *ngFor="let car of topCars">
+        <div class="name">{{ car.name }}</div>
+        <div class="count">{{ car.total_rentals }} lần</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="new-bookings">
+    <h3>Booking mới hôm nay</h3>
+    <div class="list">
+      <div class="item" *ngFor="let b of newBookings">
+        <div class="user">{{ b.user?.name }}</div>
+        <div class="car">{{ b.car?.name }}</div>
+        <div class="price">{{ formatMoney(b.total_price) }} ₫</div>
+      </div>
+    </div>
+  </section>
+
   <div class="actions">
     <a class="btn" routerLink="/admin/bookings">Quản lý booking</a>
     <a class="btn secondary" routerLink="/admin/cars">Quản lý xe</a>
   </div>
 </div>
-
-<ng-template #loadingTpl>
-  <div class="loading">Đang tải dữ liệu...</div>
-</ng-template>

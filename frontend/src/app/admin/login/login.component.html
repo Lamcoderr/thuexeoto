@@ -1,18 +1,16 @@
 <div class="login-container">
-  <h2>Đăng nhập hệ thống</h2>
+  <h2>Admin Login</h2>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+  <form [formGroup]="form" (ngSubmit)="submit()">
 
-    <label>Email:</label>
-    <input type="email" formControlName="email" placeholder="Nhập email">
+    <label>Email</label>
+    <input type="email" formControlName="email" placeholder="admin@gmail.com">
 
-    <label>Mật khẩu:</label>
-    <input type="password" formControlName="password" placeholder="Nhập mật khẩu">
+    <label>Mật khẩu</label>
+    <input type="password" formControlName="password" placeholder="Mật khẩu">
 
-    <button type="submit" [disabled]="loginForm.invalid">Đăng nhập</button>
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'Đang xử lý...' : 'Đăng nhập' }}
+    </button>
   </form>
-
-  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
-
-  <a class="forgot" (click)="forgotPassword()">Quên mật khẩu?</a>
-</div>
+  </div>

@@ -20,7 +20,9 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)
+        $email = strtolower($request->email);
+
+        $user = User::where('email', $email)
                     ->where('role', 'admin')
                     ->first();
 
@@ -131,7 +133,8 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
         // lấy đúng user thường
-        $user = User::where('email', $request->email)
+        $email = strtolower($request->email);
+        $user = User::where('email', $email)
                     ->where('role', 'user')
                     ->first();
         // kiểm tra sai email / mật khẩu

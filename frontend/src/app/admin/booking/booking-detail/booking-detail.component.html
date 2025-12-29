@@ -1,13 +1,13 @@
-<div class="detail-box" *ngIf="booking">
+<div class="detail-box" *ngIf="!loading && booking">
 
   <h2>Chi tiết Booking</h2>
 
   <div class="info">
-    <p><strong>Tên khách:</strong> {{ booking.user.name }}</p>
-    <p><strong>SĐT:</strong> {{ booking.user.phone }}</p>
-    <p><strong>Email:</strong> {{ booking.user.email }}</p>
+    <p><strong>Tên khách:</strong> {{ booking.user?.name }}</p>
+    <p><strong>SĐT:</strong> {{ booking.user?.phone }}</p>
+    <p><strong>Email:</strong> {{ booking.user?.email }}</p>
 
-    <p><strong>Xe thuê:</strong> {{ booking.car.name }}</p>
+    <p><strong>Xe thuê:</strong> {{ booking.car?.name }}</p>
     <p><strong>Ngày thuê:</strong> {{ booking.start_date }} → {{ booking.end_date }}</p>
 
     <p><strong>Ghi chú:</strong> {{ booking.note || "Không có" }}</p>
@@ -28,3 +28,5 @@
   </div>
 
 </div>
+
+<div *ngIf="loading" class="loading">Đang tải chi tiết booking...</div>

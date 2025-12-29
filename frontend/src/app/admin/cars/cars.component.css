@@ -23,6 +23,16 @@ h2 {
   background-color: #e65c00;
 }
 
+.loading, .error {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+}
+
+.error {
+  color: red;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

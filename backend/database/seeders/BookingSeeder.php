@@ -15,7 +15,7 @@ class BookingSeeder extends Seeder
             'start_date' => '2025-11-30',
             'end_date' => '2025-12-02',
             'total_price' => 1000000,
-            'status' => 'pending',
+            'status' => 'canceled',
             'note' => 'Khách muốn giao xe buổi sáng.'
         ]);
 
@@ -25,7 +25,7 @@ class BookingSeeder extends Seeder
             'start_date' => '2025-12-10',
             'end_date' => '2025-12-12',
             'total_price' => 1600000,
-            'status' => 'confirmed',
+            'status' => 'completed',
         ]);
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
         $table->integer('price');
         $table->integer('seats');
         $table->string('license_plate')->unique(); 
-        $table->string('image_url')->nullable();
+        $table->string('image')->nullable();
         $table->text('description')->nullable();
         $table->timestamps();
     });

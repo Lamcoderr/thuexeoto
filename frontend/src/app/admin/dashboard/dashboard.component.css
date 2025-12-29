@@ -21,6 +21,16 @@
 .recent-item .left .car { color:#666; font-size: 13px; }
 .recent-item .right { text-align:right; color:#333; }
 
+.revenue-chart, .top-cars, .new-bookings { background: #fff; padding: 16px; border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); margin-bottom: 18px; }
+.revenue-chart .chart { display: flex; gap: 8px; height: 200px; align-items: end; }
+.revenue-chart .bar { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.revenue-chart .bar-fill { width: 100%; background: #6a5af9; border-radius: 4px 4px 0 0; min-height: 10px; }
+.revenue-chart .label { margin-top: 8px; font-size: 12px; color: #666; }
+
+.top-cars .list, .new-bookings .list { display: flex; flex-direction: column; gap: 8px; }
+.top-cars .item, .new-bookings .item { display: flex; justify-content: space-between; padding: 12px; background: #f9f9f9; border-radius: 8px; }
+.new-bookings .item { flex-direction: column; gap: 4px; }
+
 .actions { margin-top: 16px; display:flex; gap:10px; }
 .btn { display:inline-block; padding:10px 14px; background:#6a5af9; color:white; border-radius:8px; text-decoration:none; }
 .btn.secondary { background:#eee; color:#333; }

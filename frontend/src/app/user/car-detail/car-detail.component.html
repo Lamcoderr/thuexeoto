@@ -44,10 +44,10 @@
       <input type="email" [(ngModel)]="booking.email" placeholder="example@gmail.com">
 
       <label>Ngày bắt đầu</label>
-      <input type="date" [(ngModel)]="booking.start_date">
+      <input type="date" [(ngModel)]="booking.start_date" (change)="calculateTotal()">
 
       <label>Ngày kết thúc</label>
-      <input type="date" [(ngModel)]="booking.end_date">
+      <input type="date" [(ngModel)]="booking.end_date" (change)="calculateTotal()">
 
       <label>Ghi chú</label>
       <textarea rows="2" [(ngModel)]="booking.note"></textarea>
@@ -61,4 +61,4 @@
     </div>
   </div>
 
-</div>
+  </div>

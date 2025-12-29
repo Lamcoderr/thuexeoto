@@ -17,6 +17,7 @@ export class UserCarsComponent implements OnInit {
   keyword = '';
   brand = '';
   seats = '';
+  loading = true;
 
   constructor(private api: ApiService, private router: Router) {}
 
@@ -24,7 +25,23 @@ export class UserCarsComponent implements OnInit {
     this.loadCars();
   }
 
+  normalizeCar(c: any) {
+    if (!c) return c;
+    if (!c.image_url) {
+      if (c.image) {
+        c.image_url = this.api.getImageUrl(c.image);
+      } else {
+        c.image_url = '/assets/default-car.png';
+      }
+    }
+    if (!c.price && c.price_per_day) {
+      c.price = c.price_per_day;
+    }
+    return c;
+  }
+
   loadCars() {
+    this.loading = true;
     const filters: any = {};
 
     if (this.keyword.trim() !== '') filters.keyword = this.keyword;
@@ -33,13 +50,17 @@ export class UserCarsComponent implements OnInit {
 
     this.api.searchCars(filters).subscribe({
       next: (res: any) => {
-        this.cars = res.data || [];
+        this.cars = (res.data || []).map((c: any) => this.normalizeCar(c));
+        this.loading = false;
       },
-      error: err => console.error(err)
+      error: () => {
+        this.cars = [];
+        this.loading = false;
+      }
     });
   }
 
-  viewDetail(id: number) {
-    this.router.navigate(['/cars', id]);
+  viewDetail(carId: number) {
+    this.router.navigate(['/cars', carId]);
   }
 }

@@ -17,28 +17,30 @@ class BookingController extends Controller
     // ============================
     public function store(Request $request)
     {
-        $request->validate([
-            'user_id'    => 'required|exists:users,id',
-            'car_id'     => 'required|exists:cars,id',
-            'start_date' => 'required|date',
-            'end_date'   => 'required|date|after:start_date',
-            'note'       => 'nullable|string',
-        ]);
+        try {
+            \Log::info('Booking store request', $request->all());
 
-        $car = Car::findOrFail($request->car_id);
+            $request->validate([
+                'user_id'    => 'required|exists:users,id',
+                'car_id'     => 'required|exists:cars,id',
+                'start_date' => 'required|date|after_or_equal:today',
+                'end_date'   => 'required|date|after_or_equal:start_date',
+                'note'       => 'nullable|string',
+            ]);
 
-        // Kiểm tra trùng lịch
-        $check = Booking::where('car_id', $request->car_id)
-            ->where('status', '!=', 'canceled')
-            ->where(function ($q) use ($request) {
-                $q->whereBetween('start_date', [$request->start_date, $request->end_date])
-                  ->orWhereBetween('end_date', [$request->start_date, $request->end_date])
-                  ->orWhereRaw('? BETWEEN start_date AND end_date', [$request->start_date])
-                  ->orWhereRaw('? BETWEEN start_date AND end_date', [$request->end_date]);
-            })
-            ->exists();
+            $car = Car::findOrFail($request->car_id);
 
-        if ($check) {
+        // Kiểm tra trùng lịch - logic overlap chuẩn
+        $overlappingBookings = Booking::where('car_id', $request->car_id)
+            ->whereIn('status', ['pending', 'confirmed'])
+            ->where('start_date', '<=', $request->end_date)
+            ->where('end_date', '>=', $request->start_date)
+            ->get();
+
+        \Log::info('Overlapping bookings count: ' . $overlappingBookings->count(), $overlappingBookings->toArray());
+
+        if ($overlappingBookings->count() > 0) {
+            \Log::info('Overlap detected for car ' . $request->car_id);
             return response()->json([
                 'status' => false,
                 'message' => 'Xe đã có lịch trong khoảng ngày này.'
@@ -68,16 +70,36 @@ class BookingController extends Controller
             'message' => 'Đặt lịch thành công. Chúng tôi sẽ liên hệ để xác nhận.',
             'data' => $booking
         ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Validation error', $e->errors());
+            return response()->json([
+                'status' => false,
+                'message' => 'Dữ liệu không hợp lệ',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Booking store error', ['message' => $e->getMessage()]);
+            return response()->json([
+                'status' => false,
+                'message' => 'Đặt xe thất bại: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     // ============================
     // ADMIN – LẤY TOÀN BỘ BOOKING
     // ============================
-    public function index()
+    public function index(Request $request)
     {
+        $query = Booking::with(['user', 'car']);
+
+        if ($request->has('status') && $request->status) {
+            $query->where('status', $request->status);
+        }
+
         return response()->json([
             'status' => true,
-            'data' => Booking::with(['user', 'car'])->orderBy('id', 'desc')->get()
+            'data' => $query->orderBy('id', 'desc')->get()
         ]);
     }
 
@@ -134,6 +156,10 @@ class BookingController extends Controller
     // ============================
     public function approve($id)
     {
+        if (request()->user()->role !== 'admin') {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         $booking = Booking::with(['user', 'car'])->find($id);
 
         if (!$booking) {

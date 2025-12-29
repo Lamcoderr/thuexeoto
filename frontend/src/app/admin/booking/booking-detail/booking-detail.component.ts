@@ -13,6 +13,7 @@ import { ApiService } from '../../../services/api.service';
 export class BookingDetailComponent implements OnInit {
 
   booking: any = null;
+  loading = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,11 +27,16 @@ export class BookingDetailComponent implements OnInit {
   }
 
   loadBooking(id: number) {
-    this.api['getBookingById'](id).subscribe({
+    this.loading = true;
+    this.api.getBookingDetail(id).subscribe({
       next: (res: any) => {
         this.booking = res.data;
+        this.loading = false;
       },
-      error: (err: any) => console.log(err)
+      error: (err: any) => {
+        console.log(err);
+        this.loading = false;
+      }
     });
   }
 

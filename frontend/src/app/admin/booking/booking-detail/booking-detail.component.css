@@ -49,6 +49,13 @@ button {
   color: white;
 }
 
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #666;
+}
+
 .tag {
   padding: 5px 10px;
   border-radius: 6px;

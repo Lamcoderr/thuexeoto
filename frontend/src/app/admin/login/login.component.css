@@ -1,55 +1,13 @@
 .login-container {
-  width: 350px;
-  margin: 80px auto;
-  padding: 25px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background: white;
-  text-align: center;
-  font-family: Arial;
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 28px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
 }
-
-h2 {
-  margin-bottom: 20px;
-  color: #f53b00;
-}
-
-label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-button {
-  width: 100%;
-  margin-top: 20px;
-  padding: 12px;
-  background: #f53b00;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-button:hover {
-  background: #d83700;
-}
-
-.error {
-  margin-top: 10px;
-  color: red;
-}
-
-.forgot {
-  display: block;
-  margin-top: 15px;
-  color: blue;
-  cursor: pointer;
-}
+h2 { text-align:center; margin-bottom:18px; }
+label { display:block; margin-top:8px; color:#333; }
+input { width:100%; padding:10px; margin-top:6px; border-radius:6px; border:1px solid #ddd; }
+button { margin-top:14px; width:100%; padding:10px; background:#7b2ff7; color:white; border:none; border-radius:8px; cursor:pointer; }
+button:disabled { opacity:0.6; cursor:not-allowed; }

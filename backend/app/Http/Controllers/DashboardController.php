@@ -70,6 +70,87 @@ class DashboardController extends Controller
         ]);
     }
 
+    // ============================
+    // API: DOANH THU THÁNG NÀY
+    // ============================
+    public function revenueThisMonth()
+    {
+        $month = Carbon::now()->format('Y-m');
+
+        $revenue = Booking::whereIn('status', ['confirmed', 'completed'])
+                    ->where(function($q) use ($month) {
+                        $q->where('start_date', 'LIKE', "$month%")
+                          ->orWhere('end_date', 'LIKE', "$month%");
+                    })
+                    ->sum('total_price');
+
+        return response()->json([
+            'status' => true,
+            'revenue' => $revenue
+        ]);
+    }
+
+    // ============================
+    // API: DOANH THU NĂM NAY
+    // ============================
+    public function revenueThisYear()
+    {
+        $year = Carbon::now()->format('Y');
+
+        $revenue = Booking::whereIn('status', ['confirmed', 'completed'])
+                    ->where(function($q) use ($year) {
+                        $q->where('start_date', 'LIKE', "$year%")
+                          ->orWhere('end_date', 'LIKE', "$year%");
+                    })
+                    ->sum('total_price');
+
+        return response()->json([
+            'status' => true,
+            'revenue' => $revenue
+        ]);
+    }
+
+    // ============================
+    // API: XE ĐƯỢC THUÊ NHIỀU NHẤT
+    // ============================
+    public function topRentedCars()
+    {
+        $topCars = Booking::select('car_id', DB::raw('COUNT(*) as total_rentals'))
+                        ->whereIn('status', ['confirmed', 'completed'])
+                        ->groupBy('car_id')
+                        ->orderBy('total_rentals', 'desc')
+                        ->take(5)
+                        ->with('car')
+                        ->get()
+                        ->map(function($b) {
+                            return [
+                                'car' => $b->car,
+                                'total_rentals' => $b->total_rentals
+                            ];
+                        });
+
+        return response()->json([
+            'status' => true,
+            'data' => $topCars
+        ]);
+    }
+
+    // ============================
+    // API: BOOKING MỚI NHẤT
+    // ============================
+    public function newBookings()
+    {
+        $newBookings = Booking::with(['user', 'car'])
+                            ->orderBy('created_at', 'desc')
+                            ->take(5)
+                            ->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $newBookings
+        ]);
+    }
+
     // =============================
     //  API LỊCH XE (CALENDAR VIEW)
     // =============================

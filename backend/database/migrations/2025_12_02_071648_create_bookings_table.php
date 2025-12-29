@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->integer('total_price');
 
-            $table->enum('status', ['pending', 'confirmed', 'rejected', 'canceled'])
+            $table->enum('status', ['pending', 'confirmed', 'rejected', 'canceled', 'completed'])
               ->default('pending');
 
             $table->text('note')->nullable();

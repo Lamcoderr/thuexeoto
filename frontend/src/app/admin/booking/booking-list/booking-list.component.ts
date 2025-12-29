@@ -34,7 +34,7 @@ export class BookingListComponent implements OnInit {
   }
 
   loadBookings() {
-    this.api['filterBookings'](this.filterStatus).subscribe({
+    this.api.filterBooking(this.filterStatus).subscribe({
       next: (res: any) => {
         this.bookings = res.data;
       },

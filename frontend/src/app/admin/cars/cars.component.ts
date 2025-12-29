@@ -13,6 +13,8 @@ import { ApiService } from '../../services/api.service';
 export class CarsComponent implements OnInit {
 
   cars: any[] = [];
+  loading = true;
+  error: string | null = null;
 
   constructor(private api: ApiService) {}
 
@@ -21,12 +23,16 @@ export class CarsComponent implements OnInit {
   }
 
   loadCars() {
+    this.loading = true;
+    this.error = null;
     this.api.getCars().subscribe({
       next: (res: any) => {
         this.cars = res.data;
+        this.loading = false;
       },
       error: (err) => {
-        console.log(err);
+        this.error = 'Không thể tải danh sách xe';
+        this.loading = false;
       }
     });
   }

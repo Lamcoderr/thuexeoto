@@ -4,8 +4,8 @@
   <header class="header">
     <div class="logo">Thuê Xe 24h</div>
     <nav>
-      <a href="#">Trang chủ</a>
-      <a href="#">Liên hệ</a>
+      <a routerLink="/cars">Trang chủ</a>
+      <a routerLink="/contact">Liên hệ</a>
     </nav>
   </header>
 
@@ -36,7 +36,7 @@
   </div>
 
   <!-- LIST -->
-  <div class="grid">
+  <div class="grid" *ngIf="!loading; else loadingTpl">
     <div class="car-card" *ngFor="let car of cars">
       <img [src]="car.image_url" loading="lazy">
 
@@ -48,5 +48,9 @@
       <button (click)="viewDetail(car.id)">Xem chi tiết</button>
     </div>
   </div>
+
+  <ng-template #loadingTpl>
+    <div class="loading">Đang tải danh sách xe...</div>
+  </ng-template>
 
 </div>
